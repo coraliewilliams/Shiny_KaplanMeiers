@@ -4,16 +4,13 @@
 
 shinyServer(function(input, output, session) {
   
-
   selectedData <- reactive({
     baz5[, c(input$sur_var)]
   })
   
-  
   output$caption <- renderText({
     paste("Diagnostic Change graphic of", input$sur_var, sep="\n")
   })
-  
   
   runSur <- reactive({
     survfit(as.formula(paste("Surv(timepoint,chgt) ~ ",paste(input$sur_var))),data=baz5)
@@ -26,7 +23,7 @@ shinyServer(function(input, output, session) {
     
     surv_plot <- ggsurvplot(runSur(), 
                data=baz5,
-               ylab= "Diagnostic change",
+               ylab= "Endpoint",
                xlab= "Time (Days)",
                font.main = 18,
                font.x =  14,
@@ -42,8 +39,3 @@ shinyServer(function(input, output, session) {
 
   
 })
-  
-
-# input <- list(0)
-# input$sur_var <- names(baz5)[names(baz5) != "timepoint" & names(baz5) != "chgt"]
-# survfit(as.formula(paste("Surv(timepoint,chgt) ~ ",paste(input$sur_var))),data=baz5)
